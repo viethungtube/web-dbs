@@ -1,0 +1,1 @@
+Chạy file setup.sh với quyền sudo
