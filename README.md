@@ -1,2 +1,2 @@
-- Nếu sử dụng Ubuntu thì cần chmod +x file setup.sh trước khi chạy
-- Chạy file setup với quyền sudo
+- Nếu sử dụng Ubuntu thì cần chmod +x setup.sh trước khi chạy,Kali không cần
+- Chạy file setup.sh với quyền sudo
