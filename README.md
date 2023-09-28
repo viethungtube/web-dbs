@@ -1,2 +1,2 @@
-- Nếu sử dụng Ubuntu thì cần chmod +x setup.sh trước khi chạy,Kali không cần
+- Nên sử dụng Kali, nếu sử dụng Ubuntu thì cần chmod +x setup.sh trước khi chạy
 - Chạy file setup.sh với quyền sudo
