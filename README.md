@@ -1,2 +1,3 @@
+- Nên take snapshot trước khi chạy
 - Nên sử dụng Kali, nếu sử dụng Ubuntu thì cần chmod +x setup.sh trước khi chạy
 - Chạy file setup.sh với quyền sudo
