@@ -91,9 +91,8 @@ INSERT INTO `users` (`ID`, `name`, `email`, `password`, `phone_number`, `address
 (9, 'final 2', '8@gmail.com', '123', '0912321', 'Quảng Bình', 0),
 (10, 'final 3', 'final3@gmail.com', '123', '48123123', 'Hà Nam', 0),
 (18, 'no', 'no@gmail.com', '123', '132', 'sdfdfs', 0),
-(19, 'Như', 'ntn@gmail.com', '', '123123', 'Hải Phòng', 0),
-(20, 'mo', 'mo@gmail.com', '123', '123', 'HN', 0),
-(23, 'KdHXRxPh', 'KdHXRxPh@burpcollaborator.net', 's5P!m6v!P4', '175-484-3555', 'KdHXRxPh', 0);
+(19, 'Như', 'ntn@gmail.com', '123', '123123', 'Hải Phòng', 0),
+(20, 'mo', 'mo@gmail.com', '123', '123', 'HN', 0);
 
 --
 -- Indexes for dumped tables
