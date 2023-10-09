@@ -55,7 +55,7 @@
         ?>
         <h3 style="background-color:greenyellow;">Welcome to <?php echo $name ?>'s page </h3>
         <br>
-        <a href="../webntn/user.php">Click to go back !!!</a>
+        <a href="../web/user.php">Click to go back !!!</a>
     </div>
 
     <div id="middle">
