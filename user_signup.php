@@ -9,18 +9,26 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     $address = $_POST['address'];
 
     require 'admin/connect.php';
-    $query = "SELECT * FROM users WHERE email='$email'";
-    $result = mysqli_query($connect,$query);
-    if(mysqli_num_rows($result) > 0){
+
+    $query_check_email = "SELECT * FROM users WHERE email=?";
+    $stmt_check_email = mysqli_prepare($connect, $query_check_email);
+    mysqli_stmt_bind_param($stmt_check_email, "s", $email);
+    mysqli_stmt_execute($stmt_check_email);
+    $result_check_email = mysqli_stmt_get_result($stmt_check_email);
+
+    if(mysqli_num_rows($result_check_email) > 0){
         $_SESSION['error'] = 'Email has been duplicated !!!';
         header('location:user_signup.php');
         exit;
     }
 
     if($password == $cpassword){
-        $query_insert = "INSERT INTO users(name,email,password,phone_number,address,level)
-            VALUES('$name','$email','$password','$phone_number','$address',0)";
-        mysqli_query($connect,$query_insert);
+        $query_insert = "INSERT INTO users(name,email,password,phone_number,address,level) VALUES(?,?,?,?,?,0)";
+        $stmt_insert = mysqli_prepare($connect, $query_insert);
+        mysqli_stmt_bind_param($stmt_insert, "sssss", $name, $email, $password, $phone_number, $address);
+        mysqli_stmt_execute($stmt_insert);
+
+        mysqli_stmt_close($stmt_insert);
         mysqli_close($connect);
 
         header('location:index.php?msg=New account created successfully !!!');
@@ -30,6 +38,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     header("location:user_signup.php");
     exit;
 }
+
 ?>
 
 <!DOCTYPE html>
