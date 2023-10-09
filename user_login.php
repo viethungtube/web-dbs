@@ -1,4 +1,6 @@
 <?php
+   $error = "";
+   $email_cookie = "";
    session_start();
    if(isset($_SESSION['id'])){
       header('location:user.php');
@@ -6,13 +8,17 @@
    }
 
    if(isset($_POST['submit'])){
-         $email = $_POST['email'];
-         $password = $_POST['password'];
+         
          
          require 'admin/connect.php';
-         $query = "SELECT * FROM users
-               WHERE email='$email' AND password='$password'";
-         $result = mysqli_query($connect,$query);
+
+         $query = "SELECT * FROM users WHERE email = ? AND password = ?";
+         $stmt = mysqli_prepare($connect, $query);
+         $email = $_POST['email'];
+         $password = $_POST['password'];
+         mysqli_stmt_bind_param($stmt, "ss", $email, $password);
+         mysqli_stmt_execute($stmt);
+         $result = mysqli_stmt_get_result($stmt);
          if(mysqli_num_rows($result) == 1){
             if(isset($_POST['remember'])){
                   setcookie('email',$email,time()+60*60*24*30);
