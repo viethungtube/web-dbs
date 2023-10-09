@@ -75,9 +75,13 @@
 
         #Split page:
             $id = $_SESSION['id'];
-            $query_num_news = "SELECT * FROM news 
-                    WHERE users_id='$id' AND title like '%$search%'";
-            $result_num_news = mysqli_query($connect,$query_num_news);
+            $id = $_SESSION['id'];
+            $search = "%" . $search . "%";
+            $query_num_news = "SELECT * FROM news WHERE users_id = ? AND title LIKE ?";
+            $stmt = mysqli_prepare($connect, $query_num_news);           
+            mysqli_stmt_bind_param($stmt, "is", $id, $search);
+            mysqli_stmt_execute($stmt);
+            $result_num_news = mysqli_stmt_get_result($stmt);
             $num_news = mysqli_num_rows($result_num_news);
 
             $num_news_per_page = 3;
@@ -90,9 +94,16 @@
             $num_page_bypass = $num_news_per_page*($page-1);
 
         #Search:
-            $query_search = "SELECT * FROM news WHERE users_id='$id' AND title like '%$search%' 
-                        LIMIT $num_news_per_page OFFSET $num_page_bypass";
-            $result_search = mysqli_query($connect,$query_search);
+            
+            $query_search = "SELECT * FROM news WHERE users_id = ? AND title LIKE ? LIMIT ? OFFSET ?";
+            $stmt_search = mysqli_prepare($connect, $query_search);            
+            mysqli_stmt_bind_param($stmt_search, "issi", $id, $search, $num_news_per_page, $num_page_bypass);           
+            mysqli_stmt_execute($stmt_search);            
+            $result_search = mysqli_stmt_get_result($stmt_search);            
+            while ($row = mysqli_fetch_assoc($result_search)) {                
+            }           
+            mysqli_stmt_close($stmt_search);
+
         ?>
 
         <!-- Redirect page: -->
