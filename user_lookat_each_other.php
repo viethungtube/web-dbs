@@ -41,7 +41,7 @@
 <div id="total">
     <div id="above">
         <?php 
-            session_start();
+            //session_start();
             $id2 = $_SESSION['id']; 
             if(isset($_GET['ID'])){
                 $id2 = $_GET['ID'];
@@ -55,36 +55,42 @@
         ?>
         <h3 style="background-color:greenyellow;">Welcome to <?php echo $name ?>'s page </h3>
         <br>
-        <a href="../web/user.php">Click to go back !!!</a>
+        <a href="../webntn/user.php">Click to go back !!!</a>
     </div>
 
     <div id="middle">
         <?php
             require 'admin/connect.php';
             $search = "";
-            if(isset($_GET['search'])){
+            if (isset($_GET['search'])) {
                 $search = $_GET['search'];
             }
             
-        #Split page:
-            $query_num_news = "SELECT * FROM news 
-                    WHERE users_id='$id' AND title like '%$search%'";
-            $result_num_news = mysqli_query($connect,$query_num_news);
+            #Split page:
+            $query_num_news = "SELECT * FROM news WHERE users_id=? AND title LIKE ?";
+            $stmt_num_news = mysqli_prepare($connect, $query_num_news);
+            mysqli_stmt_bind_param($stmt_num_news, "is", $id, $searchParam);
+            $searchParam = "%$search%";
+            mysqli_stmt_execute($stmt_num_news);
+            $result_num_news = mysqli_stmt_get_result($stmt_num_news);
             $num_news = mysqli_num_rows($result_num_news);
-
+            
             $num_news_per_page = 3;
             $num_page = ceil($num_news / $num_news_per_page);
-
+            
             $page = 1;
-            if(isset($_GET['page'])){
+            if (isset($_GET['page'])) {
                 $page = $_GET['page'];
             }
-            $num_page_bypass = $num_news_per_page*($page-1);
-
-        #Search:
-            $query_search = "SELECT * FROM news WHERE users_id='$id' AND title like '%$search%' 
-                        LIMIT $num_news_per_page OFFSET $num_page_bypass";
-            $result_search = mysqli_query($connect,$query_search);
+            $num_page_bypass = $num_news_per_page * ($page - 1);
+            
+            #Search:
+            $query_search = "SELECT * FROM news WHERE users_id=? AND title LIKE ? LIMIT ? OFFSET ?";
+            $stmt_search = mysqli_prepare($connect, $query_search);
+            mysqli_stmt_bind_param($stmt_search, "isii", $id, $searchParam, $num_news_per_page, $num_page_bypass);
+            mysqli_stmt_execute($stmt_search);
+            $result_search = mysqli_stmt_get_result($stmt_search);
+            
         ?>
 
         <table border="1" width="100%">
