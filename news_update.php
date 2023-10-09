@@ -1,16 +1,17 @@
-<?php require 'check_login.php' ?>
-
 <?php
-if($_SERVER["REQUEST_METHOD"] == "POST"){
+session_start();
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
     require 'admin/connect.php';
     $id = $_POST['id'];
-    $title = mysqli_real_escape_string($connect,$_POST['title']);
-    $content = mysqli_real_escape_string($connect,$_POST['content']);
+    $title = $_POST['title'];
+    $content = $_POST['content'];
     $picture = $_POST['picture'];
+    $query_update = "UPDATE news SET title=?, content=?, picture=? WHERE ID=?";
+    $stmt = mysqli_prepare($connect, $query_update);
+    mysqli_stmt_bind_param($stmt, "sssi", $title, $content, $picture, $id);
+    mysqli_stmt_execute($stmt);
 
-    $query_update = "UPDATE news SET title='$title',
-        content='$content', picture='$picture' WHERE ID='$id'";
-    mysqli_query($connect,$query_update);
+    mysqli_stmt_close($stmt);
     mysqli_close($connect);
 
     header('location:user.php?msg=News updated successfully !!!');
@@ -28,15 +29,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 </head>
 <body>
 <?php
-    session_start();
-    $user_id = $_SESSION['id'];
-    $id = $_GET['ID'];
-    require 'admin/connect.php';
-    $query = "SELECT * FROM news WHERE ID='$id' AND users_id='$user_id'";
-    $result = mysqli_query($connect,$query);
-    if(mysqli_num_rows($result) == 1){
-        $each = mysqli_fetch_array($result);
+session_start();
+$user_id = $_SESSION['id'];
+$id = $_GET['ID'];
+require 'admin/connect.php';
+$query = "SELECT * FROM news WHERE ID=? AND users_id=?";
+$stmt = mysqli_prepare($connect, $query);
+mysqli_stmt_bind_param($stmt, "ii", $id, $user_id);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+if (mysqli_num_rows($result) == 1) {
+    $each = mysqli_fetch_array($result);
 ?>
+
 
 <form method="post">
     <input type="hidden" name="id" value="<?php echo $id ?>">
