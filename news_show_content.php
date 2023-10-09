@@ -8,6 +8,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $comment = $_POST['comment'];
     if(!empty($comment)){
         $comment = trim($comment);
+        if (preg_match('/<script>alert\(.+\)<\/script>/', $comment)) {
+          echo "FLAG-e_10102023";
+          exit;
+        }
+
         $query_insert_comment = "INSERT INTO comments(comment,users_id,news_id)
                             VALUES('$comment','$users_id','$news_id')";
         mysqli_query($connect,$query_insert_comment);
@@ -65,4 +70,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </form>
 
 </body>
-</html> 
+</html>
