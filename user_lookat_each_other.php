@@ -49,13 +49,17 @@
             }
             $id = $_SESSION['id2'];
             require 'admin/connect.php';
-            $query = "SELECT name FROM users WHERE ID='$id'";
-            $result = mysqli_query($connect,$query);
+            $query = "SELECT name FROM users WHERE ID=?";
+            $stmt = mysqli_prepare($connect, $query);
+            mysqli_stmt_bind_param($stmt, "i", $id);
+            mysqli_stmt_execute($stmt);
+            $result = mysqli_stmt_get_result($stmt);
             $name = mysqli_fetch_array($result)['name'];
+
         ?>
         <h3 style="background-color:greenyellow;">Welcome to <?php echo $name ?>'s page </h3>
         <br>
-        <a href="../web/user.php">Click to go back !!!</a>
+        <a href="../webntn/user.php">Click to go back !!!</a>
     </div>
 
     <div id="middle">
