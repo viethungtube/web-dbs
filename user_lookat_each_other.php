@@ -41,7 +41,7 @@
 <div id="total">
     <div id="above">
         <?php 
-            //session_start();
+            session_start();
             $id2 = $_SESSION['id']; 
             if(isset($_GET['ID'])){
                 $id2 = $_GET['ID'];
@@ -55,7 +55,7 @@
         ?>
         <h3 style="background-color:greenyellow;">Welcome to <?php echo $name ?>'s page </h3>
         <br>
-        <a href="../web/user.php">Click to go back !!!</a>
+        <a href="../user.php">Click to go back !!!</a>
     </div>
 
     <div id="middle">

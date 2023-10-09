@@ -60,6 +60,15 @@
                         users_id INT(5),
                         FOREIGN KEY(users_id) REFERENCES users(ID))";
     mysqli_query($connect,$query_table_news);
+
+    $query_table_comments = "CREATE TABLE IF NOT EXISTS comments(
+                        ID INT(5) AUTO_INCREMENT PRIMARY KEY,
+                        users_id INT(5),
+                        news_id INT(5),
+                        comment TEXT,
+                        FOREIGN KEY(users_id) REFERENCES users(ID),
+                        FOREIGN KEY(news_id) REFERENCES news(ID))";
+    mysqli_query($connect,$query_table_comments);
     mysqli_close($connect);
 ?>
 

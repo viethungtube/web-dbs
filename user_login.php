@@ -37,7 +37,7 @@
             $error = "Please enter valid login details !";
          }
    }
-   $set_remember = "";
+
    if(isset($_COOKIE['email']) && isset($_COOKIE['password'])){
          $email_cookie = $_COOKIE['email'];
          $password_cookie = $_COOKIE['password'];
@@ -76,7 +76,7 @@
                         <div class="input-group-prepend">
                            <span class="input-group-text"><i class="fas fa-user"></i></span>
                         </div>
-                        <input type="text" class="form-control" placeholder="Email" name="email" 
+                        <input type="text" class="form-control" placeholder="Email" name="email" value="<?php echo $email_cookie ?>">
                      </div>
                      <div class="input-group form-group">
                         <div class="input-group-prepend">
@@ -84,16 +84,16 @@
                         </div>
                         <input type="password" class="form-control" placeholder="Password" name="password" value="<?php echo $password_cookie ?>">
                      </div>
-                     <!-- <div class="row align-items-center remember">
-                        <input type="checkbox" name="remember" <?php echo $set_remember ?>>Remember Me
-                     </div> -->
+<!-- <div class="row align-items-center remember">
+<input type="checkbox" name="remember" <?php echo $set_remember ?>>Remember Me
+</div> -->
                      <div class="form-group">
                         <input type="submit" name="submit" value="Login" class="btn float-right login_btn">
                      </div>
                   </form>
 
                     <!-- Way 1: -->
-                    <!-- <span style='color:red'><?php echo $error ?></span> -->
+                    <span style='color:red'><?php echo $error ?></span>
                     <!-- #Way 2: -->
                     <!-- <span class="error"><?php echo $error ?></span> -->
                

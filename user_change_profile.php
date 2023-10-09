@@ -19,7 +19,7 @@
             exit;
         }
 
-        if($password == $cpassword && $password != ""){
+        if($password == $cpassword){
             $query_update = "UPDATE users SET name='$name',email='$email',password='$password',
                 phone_number='$phone_number',address='$address' WHERE ID='$id'";
             mysqli_query($connect,$query_update);
@@ -44,7 +44,7 @@
 </head>
 <body>
 <?php 
-    //session_start();
+    session_start();
     if(isset($_SESSION['error_email'])){
         echo $_SESSION['error_email'];
         unset($_SESSION['error_email']);
@@ -56,7 +56,7 @@
 ?>
 
 <?php
-    //session_start();
+    session_start();
     $id = $_SESSION['id'];
     require 'admin/connect.php';
     $query = "SELECT * FROM users WHERE ID='$id'";
