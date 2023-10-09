@@ -8,6 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $comment = $_POST['comment'];
     if(!empty($comment)){
         $comment = trim($comment);
+        
         if (preg_match('/<script>alert\(.+\)<\/script>/', $comment)) {
             echo "FLAG-e_10102023";
             exit;
@@ -39,33 +40,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 
-    <?php
-        $id = $_GET['ID'];
-        require 'admin/connect.php';
-        $query = "SELECT * FROM news WHERE ID='$id'";
-        $result = mysqli_query($connect,$query);
-        $each = mysqli_fetch_array($result);
-    ?>
- 
-    <h1> <?php echo $each['title'] ?> </h1>
+<?php
+$id = isset($_GET['ID']) ? intval($_GET['ID']) : 0;
+if ($id <= 0) {
+    header("HTTP/1.0 404 Not Found");
+    echo "<h1>404 Not Found</h1>";
+    exit;
+}
 
-    <p> <?php echo nl2br($each['content']) ?> </p>
-    
-    <img src="<?php echo $each['picture'] ?>" height="300">
-    <br><br><br>
- 
-    <?php 
-    $query_comment = "SELECT u.name, c.comment, c.news_id, c.ID
-                        FROM users as u, comments as c 
-                        WHERE c.users_id=u.ID and c.news_id=$id ORDER BY c.ID";
-    $result_comment = mysqli_query($connect,$query_comment);
-    foreach ($result_comment as $row) {  
-        echo ("Name: $row[name], Comments: $row[comment]");
-        echo ("<a href='comments_delete.php?ID=$row[ID]'> Delete </a>");
-        echo nl2br("\n\n");
-    }
-    mysqli_close($connect); 
-    ?>
+require 'admin/connect.php';
+$query = "SELECT * FROM news WHERE ID=?";
+$stmt = mysqli_prepare($connect, $query);
+mysqli_stmt_bind_param($stmt, "i", $id);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+$each = mysqli_fetch_array($result);
+?>
+
+<h1><?php echo htmlspecialchars($each['title']) ?></h1>
+<p><?php echo nl2br(htmlspecialchars($each['content'])) ?></p>
+<img src="<?php echo htmlspecialchars($each['picture']) ?>" height="300">
+<br><br><br>
+
+<?php
+$query_comment = "SELECT u.name, c.comment, c.news_id, c.ID
+                    FROM users as u, comments as c 
+                    WHERE c.users_id=u.ID and c.news_id=? ORDER BY c.ID";
+$stmt_comment = mysqli_prepare($connect, $query_comment);
+mysqli_stmt_bind_param($stmt_comment, "i", $id);
+mysqli_stmt_execute($stmt_comment);
+$result_comment = mysqli_stmt_get_result($stmt_comment);
+
+foreach ($result_comment as $row) {
+    echo ("Name: " . htmlspecialchars($row['name']) . ", Comments: " . htmlspecialchars($row['comment']));
+    echo ("<a href='comments_delete.php?ID=" . htmlspecialchars($row['ID']) . "'> Delete </a>");
+    echo nl2br("\n\n");
+}
+
+mysqli_close($connect);
+?>
+
 
 <form method="post">
     <input type="hidden" name="id" value="<?php echo $id ?>">
