@@ -9,13 +9,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if(!empty($comment)){
         $comment = trim($comment);
         if (preg_match('/<script>alert\(.+\)<\/script>/', $comment)) {
-          echo "FLAG-e_10102023";
-          exit;
+            echo "FLAG-e_10102023";
+            exit;
         }
 
-        $query_insert_comment = "INSERT INTO comments(comment,users_id,news_id)
-                            VALUES('$comment','$users_id','$news_id')";
-        mysqli_query($connect,$query_insert_comment);
+        $query_insert_comment = "INSERT INTO comments(comment, users_id, news_id) VALUES (?, ?, ?)";
+        $stmt = mysqli_prepare($connect, $query_insert_comment);
+
+        if ($stmt) {
+            mysqli_stmt_bind_param($stmt, "sii", $comment, $users_id, $news_id);
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_close($stmt);
+        } 
         mysqli_close($connect);
 
         header('location:news_show_content.php?ID='.$_GET['ID']);
