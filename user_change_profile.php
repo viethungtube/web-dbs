@@ -1,9 +1,8 @@
-<?php require 'check_login.php' ?>
-
 <?php
+    session_start();
     if($_SERVER["REQUEST_METHOD"] == "POST"){
         $id = $_POST['id'];
-        $name= $_POST['name'];
+        $name = $_POST['name'];
         $email = $_POST['email'];
         $password = $_POST['password'];
         $cpassword = $_POST['cpassword'];
@@ -11,23 +10,37 @@
         $address = $_POST['address'];
 
         require 'admin/connect.php';
-        $query = "SELECT * FROM users WHERE email='$email'";
-        $result = mysqli_query($connect,$query);
-        if(mysqli_num_rows($result) > 0 && $_SESSION['id'] != mysqli_fetch_array($result)['ID']){
+        if (empty($password)) {
+            $_SESSION['error_password'] = 'Password cannot be empty !!!';
+            header("location:user_change_profile.php");
+            exit;
+        }
+
+        $query_check_email = "SELECT * FROM users WHERE email=?";
+        $stmt_check_email = mysqli_prepare($connect, $query_check_email);
+        mysqli_stmt_bind_param($stmt_check_email, "s", $email);
+        mysqli_stmt_execute($stmt_check_email);
+        $result_check_email = mysqli_stmt_get_result($stmt_check_email);
+
+        if(mysqli_num_rows($result_check_email) > 0 && $_SESSION['id'] != mysqli_fetch_array($result_check_email)['ID']){
             $_SESSION['error_email'] = 'Email has been duplicated !!!';
             header("location:user_change_profile.php");
             exit;
         }
 
         if($password == $cpassword){
-            $query_update = "UPDATE users SET name='$name',email='$email',password='$password',
-                phone_number='$phone_number',address='$address' WHERE ID='$id'";
-            mysqli_query($connect,$query_update);
+            $query_update = "UPDATE users SET name=?, email=?, password=?, phone_number=?, address=? WHERE ID=?";
+            $stmt_update = mysqli_prepare($connect, $query_update);
+            mysqli_stmt_bind_param($stmt_update, "sssssi", $name, $email, $password, $phone_number, $address, $id);
+            mysqli_stmt_execute($stmt_update);
+
+            mysqli_stmt_close($stmt_update);
             mysqli_close($connect);
 
             header('location:user_logout.php');
             exit;
         }
+
         $_SESSION['error_password'] = 'Passwords do not match !!!';
         header("location:user_change_profile.php");
         exit;
@@ -59,10 +72,16 @@
     session_start();
     $id = $_SESSION['id'];
     require 'admin/connect.php';
-    $query = "SELECT * FROM users WHERE ID='$id'";
-    $result = mysqli_query($connect,$query);
+    $query = "SELECT * FROM users WHERE ID=?";
+    $stmt = mysqli_prepare($connect, $query);
+    mysqli_stmt_bind_param($stmt, "i", $id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
     $each = mysqli_fetch_array($result);
+    mysqli_stmt_close($stmt);
+    mysqli_close($connect);
 ?>
+
 
 <form method="post">
     <input type="hidden" name="id" value="<?php echo $id ?>">
