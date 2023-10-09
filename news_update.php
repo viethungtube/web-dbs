@@ -6,6 +6,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $title = $_POST['title'];
     $content = $_POST['content'];
     $picture = $_POST['picture'];
+    $title = htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
+    $content = htmlspecialchars($content, ENT_QUOTES, 'UTF-8');
+    $picture = htmlspecialchars($picture, ENT_QUOTES, 'UTF-8');
     $query_update = "UPDATE news SET title=?, content=?, picture=? WHERE ID=?";
     $stmt = mysqli_prepare($connect, $query_update);
     mysqli_stmt_bind_param($stmt, "sssi", $title, $content, $picture, $id);
