@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
 <?php
-session_start();
+//session_start();
 $user_id = $_SESSION['id'];
 $id = $_GET['ID'];
 require 'admin/connect.php';
