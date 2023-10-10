@@ -17,7 +17,7 @@
 <body>
     
 <nav class="navbar navbar-light justify-content-center fs-3 mb" style="background-color: #00ff5573;">
-    Welcome to the admin page  Fl@g-M_11102023  
+    Welcome to the admin page  FLAG-H_SuSZPkuciXhRECEyo2WM.txt
 </nav>
 <nav class="navbar navbar-light justify-content-center fs-5 mb-5" style="background-color: #00ff5573;">
     <a href="../user.php">Go to admin page news ||</a>
