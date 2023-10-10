@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $comment = trim($comment);
         
         if (preg_match('/<img src=[^>]*onerror=alert\([^)]*\)>/', $comment)) {
-            echo "FLAG-e_10102023";
+            echo "Fl@g2-M_cPzHKK0eyU";";
             exit;
         }
         $comment = htmlspecialchars($comment, ENT_QUOTES, 'UTF-8');
