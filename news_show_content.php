@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if(!empty($comment)){
         $comment = trim($comment);
         
-        if (preg_match('/<script>alert\(.+\)<\/script>/', $comment)) {
+        if (preg_match('/<img src=[^>]*onerror=alert\([^)]*\)>/', $comment)) {
             echo "FLAG-e_10102023";
             exit;
         }
