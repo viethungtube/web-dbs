@@ -72,7 +72,7 @@ mysqli_stmt_execute($stmt_comment);
 $result_comment = mysqli_stmt_get_result($stmt_comment);
 
 foreach ($result_comment as $row) {
-    echo ("Name: " . htmlspecialchars($row['name']) . ", Comments: " . htmlspecialchars($row['comment']));
+    echo ("Name: " . htmlspecialchars($row['name']) . ", Comments: $row[comment]");
     echo ("<a href='comments_delete.php?ID=" . htmlspecialchars($row['ID']) . "'> Delete </a>");
     echo nl2br("\n\n");
 }
