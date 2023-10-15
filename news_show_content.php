@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if(!empty($comment)){
         $comment = trim($comment);
         
-        if (preg_match('/<img src=[^>]*onerror=alert\([^)]*\)>/', $comment)) {
+        if (preg_match('/<img src=[^>]*onerror=alert\(document\.cookie\)>/', $comment)) {
             echo "Fl@g2-M_cPzHKK0eyU";
             exit;
         }
