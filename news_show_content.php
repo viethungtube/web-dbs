@@ -8,15 +8,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $comment = $_POST['comment'];
     if(!empty($comment)){
         $comment = trim($comment);
-        
-        if (preg_match('/<img src=[^>]*onerror=alert\(document\.cookie\)>/', $comment)) {
+        if (preg_match('/<img src=[^>]*onerror=alert\([^)]*\)>/', $comment)) {
+            echo "cheatsheet | onerror | document.cookie";
+            exit;
+        }
+        if (preg_match('/<audio src\/onerror=alert\(document\.cookie\)>/', $comment)) {
             echo "Fl@g2-M_cPzHKK0eyU";
             exit;
         }
-        if (preg_match('/<img src=[^>]*onerror=alert\([^)]*\)>/', $comment)) {
-            echo "cheatsheet | onerror | document.cookie";
 
-        }
         //$comment = htmlspecialchars($comment, ENT_QUOTES, 'UTF-8');
         $query_insert_comment = "INSERT INTO comments(comment, users_id, news_id) VALUES (?, ?, ?)";
         $stmt = mysqli_prepare($connect, $query_insert_comment);
