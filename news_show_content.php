@@ -9,7 +9,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if(!empty($comment)){
         $comment = trim($comment);
         if (preg_match('/<img src=[^>]*onerror=alert\([^)]*\)>/', $comment)) {
-            echo "cheatsheet | onerror | document.cookie";
+            echo "Hint to final FLAG :D" ;
+            echo "<br>cheatsheet | onerror | document.cookie";
             exit;
         }
         if (preg_match('/<audio src\/onerror=alert\(document\.cookie\)>/', $comment)) {
@@ -83,7 +84,9 @@ foreach ($result_comment as $row) {
 
 mysqli_close($connect);
 ?>
-
+<script>
+   Try all your payload, Stored XSS to FLAG!!!!
+</script>
 
 <form method="post">
     <input type="hidden" name="id" value="<?php echo $id ?>">
