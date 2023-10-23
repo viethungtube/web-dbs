@@ -28,6 +28,15 @@
     <title>Insert News</title>
 </head>
 <body>
+<script>
+        $title = mysqli_real_escape_string($connect,$_POST['title']);
+        $content = mysqli_real_escape_string($connect,$_POST['content']);
+        $picture = $_POST['picture'];
+        $users_id = $_SESSION['id'];
+
+        $query_insert = "INSERT INTO news(title,content,picture,users_id)
+                VALUES('$title','$content','$picture','$users_id')";
+</script>
     <form method="post">
         Title
         <input type="text" name="title">
