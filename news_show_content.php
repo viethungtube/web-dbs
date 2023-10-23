@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $comment = trim($comment);
         if (preg_match('/<img src=[^>]*onerror=alert\([^)]*\)>/', $comment)) {
             echo "Hint to final FLAG :D" ;
-            echo "<br>cheatsheet | onerror | document.cookie";
+            echo "<br>cheatsheet xss | onerror | document.cookie";
             exit;
         }
         if (preg_match('/<audio src\/onerror=alert\(document\.cookie\)>/', $comment)) {
